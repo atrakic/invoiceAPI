@@ -1,6 +1,8 @@
 # Invoice API
 
-A minimal Azure Functions-based invoice management API built with C#/.NET 8. This application provides RESTful endpoints for managing invoices, customers, and PDF generation with Azure Storage integration.
+[![.NET](https://github.com/atrakic/invoiceAPI/actions/workflows/dotnet.yml/badge.svg)](https://github.com/atrakic/invoiceAPI/actions/workflows/dotnet.yml)
+
+> A minimal Azure Functions-based invoice management API built with C#/.NET 8. This application provides RESTful endpoints for managing invoices, customers, and PDF generation with Azure Storage integration.
 
 ## Features
 
