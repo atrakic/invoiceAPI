@@ -3,22 +3,29 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Azure.Data.Tables;
-using azure_function_azurite.Models;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.OpenApi.Models;
+using System.Net;
 
-namespace azure_function_azurite;
+namespace invoiceAPI;
 
-public class HttpExample
+public class HttpAPI
 {
-    private readonly ILogger<HttpExample> _logger;
+    private readonly ILogger<HttpAPI> _logger;
     private readonly TableServiceClient _tableServiceClient;
 
-    public HttpExample(ILogger<HttpExample> logger, TableServiceClient tableServiceClient)
+    public HttpAPI(ILogger<HttpAPI> logger, TableServiceClient tableServiceClient)
     {
         _logger = logger;
         _tableServiceClient = tableServiceClient;
     }
 
-    [Function("HttpExample")]
+    [Function(nameof(HttpAPI))]
+    [OpenApiOperation(operationId: "HttpAPI", tags: new[] { "Invoice API" }, Summary = "Invoice API Demo and Documentation", Description = "Get API information or list storage entities")]
+    [OpenApiParameter(name: "action", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "Action to perform: list (default), tables")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(object), Description = "API information or requested data")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Description = "Invalid action parameter")]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.InternalServerError, Description = "Internal server error")]
     public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
@@ -31,12 +38,10 @@ public class HttpExample
             {
                 case "list":
                     return await ListAllEntities();
-                case "seed":
-                    return await SeedSampleData();
                 case "tables":
                     return await ListAllTables();
                 default:
-                    return new BadRequestObjectResult("Invalid action. Use 'list', 'seed', or 'tables'");
+                    return new BadRequestObjectResult("Invalid action. Use 'list' or 'tables'");
             }
         }
         catch (Exception ex)
@@ -103,67 +108,6 @@ public class HttpExample
             Tables = result,
             TotalEntities = totalEntities,
             TableCount = result.Count
-        });
-    }
-
-    private async Task<IActionResult> SeedSampleData()
-    {
-        _logger.LogInformation("Seeding sample data");
-
-        const string tableName = "demo";
-        var tableClient = _tableServiceClient.GetTableClient(tableName);
-
-        // Ensure table exists
-        await tableClient.CreateIfNotExistsAsync();
-
-        var entities = new[]
-        {
-            new SampleEntity
-            {
-                PartitionKey = "sample",
-                RowKey = "001",
-                Name = "Sample Item 1",
-                Description = "First sample item",
-                Value = 100
-            },
-            new SampleEntity
-            {
-                PartitionKey = "sample",
-                RowKey = "002",
-                Name = "Sample Item 2",
-                Description = "Second sample item",
-                Value = 200
-            },
-            new SampleEntity
-            {
-                PartitionKey = "demo",
-                RowKey = "001",
-                Name = "Demo Item",
-                Description = "Demo item for testing",
-                Value = 300
-            }
-        };
-
-        var insertedCount = 0;
-        foreach (var entity in entities)
-        {
-            try
-            {
-                await tableClient.UpsertEntityAsync(entity);
-                insertedCount++;
-                _logger.LogInformation($"Inserted entity: {entity.PartitionKey}/{entity.RowKey}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, $"Failed to insert entity: {entity.PartitionKey}/{entity.RowKey}");
-            }
-        }
-
-        return new OkObjectResult(new
-        {
-            Message = "Sample data seeded successfully",
-            InsertedEntities = insertedCount,
-            TableName = tableName
         });
     }
 }

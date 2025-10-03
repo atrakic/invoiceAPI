@@ -3,6 +3,8 @@
 # Quickstart:
 # $ pip3 install pre-commit
 # $ pre-commit install
+# $ pre-commit autoupdate
+# $ pre-commit run -a
 # < edit json, yaml, (ba)sh, add trailing whitespace etc >
 # $ git add .
 # $ git commit
