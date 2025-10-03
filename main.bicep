@@ -1,3 +1,4 @@
+// # Downloaded from: [https://raw.githubusercontent.com/Azure/azure-quickstart-templates/refs/heads/master/quickstarts/microsoft.web/function-app-create-dynamic/main.bicep] at: [Fri Oct  3 23:44:10 CEST 2025]
 @description('The name of the function app that you wish to create.')
 param appName string = 'fnapp${uniqueString(resourceGroup().id)}'
 
