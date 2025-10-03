@@ -1,0 +1,11 @@
+# https://learn.microsoft.com/en-us/azure/storage/common/storage-connect-azurite?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json&tabs=blob-storage#use-custom-storage-accounts-and-keys
+services:
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    restart: always
+    command: azurite --inMemoryPersistence --disableTelemetry --tableHost 0.0.0.0 --queueHost 0.0.0.0 --blobHost 0.0.0.0
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
