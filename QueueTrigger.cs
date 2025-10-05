@@ -31,7 +31,8 @@ public class QueueTrigger
             var request = JsonSerializer.Deserialize<PdfGenerationRequest>(message.MessageText);
             if (request == null)
             {
-                _logger.LogError("Failed to deserialize PDF generation request");
+                _logger.LogError("Failed to deserialize PDF generation request - invalid message format");
+                // Don't throw - this is not a retryable error
                 return;
             }
 
@@ -40,6 +41,8 @@ public class QueueTrigger
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error processing PDF generation request");
+            // Only throw for truly transient errors that might succeed on retry
+            // For business logic errors (invoice not found), we already handled them in GenerateInvoicePdf
             throw; // This will cause the message to be retried or moved to poison queue
         }
     }
@@ -65,7 +68,9 @@ public class QueueTrigger
 
         if (invoice == null)
         {
-            _logger.LogError($"Invoice {invoiceNumber} not found");
+            _logger.LogWarning($"Invoice {invoiceNumber} not found - message will be completed without retry");
+            // Don't throw - invoice not found is not a retryable error
+            // The message will be marked as successfully processed
             return;
         }
 
