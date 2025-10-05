@@ -4,9 +4,9 @@ name: Azure Stacks (Create)
 
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - azure
 
 permissions:
   contents: read
