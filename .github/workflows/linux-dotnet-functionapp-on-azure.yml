@@ -2,10 +2,12 @@
 name: Deploy DotNet project to Azure Function App
 
 on:
+  # execute manually or after infra deployment
   workflow_dispatch:
-  push:
-    branches:
-      - azure
+  workflow_run:
+    workflows: ["azure-infra"]
+    types:
+      - completed
 
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
@@ -29,6 +31,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.TARGET_ENV || 'dev' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     steps:
     - name: 'Checkout GitHub Action'

@@ -1,6 +1,6 @@
 # https://github.com/Azure/bicep-deploy/blob/main/examples/STACKS.md
 
-name: Azure Stacks (Create)
+name: azure-infra
 
 on:
   workflow_dispatch:
