@@ -243,6 +243,53 @@ The application includes a sophisticated PDF generation system:
 - **Storage integration**: PDFs automatically stored in blob storage
 - **Multiple formats**: View in browser or download as file
 
+## Testing
+
+The project includes comprehensive tests for the core models and business logic.
+
+### Run Tests
+
+```bash
+# Run basic model tests using F# Interactive
+dotnet fsi test_runner.fsx
+
+# Expected output:
+# Running Invoice API Basic Tests...
+# ✓ Customer creation test passed
+# ✓ Invoice creation test passed
+# ✓ Invoice item creation test passed
+# ✓ Invoice item calculation test passed
+# ✓ Customer defaults test passed
+# ✓ Invoice defaults test passed
+# ✓ Invoice item defaults test passed
+# All tests completed successfully! ✅
+```
+
+### Test Coverage
+
+The test suite covers:
+- ✅ Model instantiation and property assignment
+- ✅ Default value behavior
+- ✅ Business logic calculations
+- ✅ Data validation rules
+- ✅ Multiple record operations
+
+### Test Results
+
+See `TEST_RESULTS.md` for detailed test reports including:
+- Test execution summary
+- Individual test details
+- Coverage analysis
+- Recommendations for future testing
+
+### Runtime Testing
+
+When the API is running, you can also test via HTTP endpoint:
+
+```bash
+curl "http://localhost:7071/api/tests"
+```
+
 ## Error Handling
 
 The API includes comprehensive error handling:
@@ -256,7 +303,7 @@ The API includes comprehensive error handling:
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Add tests if applicable (see Testing section)
 5. Submit a pull request
 
 ## License
