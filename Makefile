@@ -18,7 +18,8 @@ clean-local:
 	rm -rf ./{bin,obj}
 	rm -rf ./tests/*/{bin,obj}
 
-rgName?=$(shell basename $(shell pwd -P))
+rgName?=rg-$(shell basename $(shell pwd -P))
+fnName?=fn-$(shell basename $(shell pwd -P))
 location?=northeurope
 FILE?=main.bicep
 
@@ -36,6 +37,7 @@ infra:
 		--resource-group $(rgName) \
 		--template-file main.bicep \
 		--parameters runtime=dotnet \
+		--parameters appName=$(fnName) \
 		--parameters location=$(location)
 
 clean-infra:
