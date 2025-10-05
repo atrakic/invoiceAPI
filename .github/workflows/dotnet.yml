@@ -27,7 +27,7 @@ jobs:
     - name: Validate Test Files
       run: |
         echo "🔍 Checking test files exist..."
-        ls -la test_runner.fsx TEST_RESULTS.md
+        ls -la test_runner.fsx
         echo "✅ Test files found"
     - name: Run Model Tests
       run: |
