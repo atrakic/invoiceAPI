@@ -19,7 +19,7 @@ on:
 # 2. Change these variables for your configuration:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: '${{ github.event.repository.name }}'
+  AZURE_FUNCTIONAPP_NAME: 'fn-${{ github.event.repository.name }}'
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '8.0.x'
 
