@@ -6,4 +6,8 @@
 # Handle cancelation token
 - https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=ihostapplicationbuilder%2Cwindows#cancellation-tokens
 
-# Add api authentication
+# Api authentication
+
+
+# Add support for MCP
+- Use https://github.com/matthewhand/mcp-openapi-proxy
